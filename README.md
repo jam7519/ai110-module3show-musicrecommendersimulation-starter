@@ -2,32 +2,26 @@
 
 ## Project Summary
 
-In this project you will build and explain a small music recommender system.
+This project implements a content-based music recommendation system in Python. It loads song information from a CSV file, compares each song to a user's music preferences, calculates a weighted recommendation score, and returns the highest ranked songs with explanations describing why they were recommended.
 
-Your goal is to:
-
-- Represent songs and a user "taste profile" as data
-- Design a scoring rule that turns that data into recommendations
-- Evaluate what your system gets right and wrong
-- Reflect on how this mirrors real world AI recommenders
-
-Replace this paragraph with your own summary of what your version does.
-
----
 
 ## How The System Works
 
-Explain your design in plain language.
+The recommender uses content-based filtering. Every song contains descriptive features such as genre, mood, energy, valence, danceability, and acousticness.
 
-Some prompts to answer:
+A user profile stores preferred values for those same features.
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+Each song is compared against the user's preferences.
 
-You can include a simple diagram or bullet list if helpful.
+Scoring rules:
+
+- Genre match = +2 points
+- Mood match = +1 point
+- Energy similarity = up to +2 points
+- Valence similarity = up to +1 point
+- Danceability similarity = up to +1 point
+
+After every song is scored, the songs are sorted from highest score to lowest score. The five highest scoring songs are returned as recommendations along with an explanation describing why they matched the user's preferences.
 
 ---
 
@@ -68,15 +62,25 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Sample Recommendation Output
 
-Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
+```text
+Loaded songs: 10
 
-```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
+Top recommendations:
+
+1. Sunrise City
+Score: 6.89
+
+2. Gym Hero
+Score: 5.53
+
+3. Rooftop Lights
+Score: 4.81
+
+4. Night Drive Loop
+Score: 3.42
+
+5. Storm Runner
+Score: 3.38
 ```
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
@@ -85,26 +89,19 @@ Paste a sample of your recommender's output here as a text block so a reader can
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
-
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
-
----
+- Increased the weight for genre matching to improve recommendations for users who strongly prefer one music genre.
+- Adjusted the energy similarity calculation to better rank songs with similar energy levels.
+- Added valence and danceability similarity so recommendations consider more than just genre and mood. 
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
+This recommender has several limitations.
 
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
-
+- It only works with a very small music catalog.
+- It cannot understand lyrics or song meaning.
+- It does not learn from previous recommendations.
+- Recommendations depend entirely on manually selected song features.
+- Different users may value music characteristics differently, but every user is scored using the same weighting system.
 ---
 
 ## Reflection
@@ -115,8 +112,11 @@ Read and complete `model_card.md`:
 
 Write 1 to 2 paragraphs here about what you learned:
 
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
+Building this recommender helped me understand how recommendation systems compare user preferences with item features to generate personalized suggestions. I learned how weighted scoring can significantly affect the ranking of recommendations.
+
+I also learned that recommendation systems can introduce bias depending on which features receive the highest weights. Future improvements could include collaborative filtering, user feedback, and machine learning models that automatically learn feature importance from user behavior.
+
+
 
 
 
