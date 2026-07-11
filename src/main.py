@@ -1,34 +1,61 @@
 """
-Command line runner for the Music Recommender Simulation.
+Command-line runner for the Music Recommender Simulation.
 
-This file helps you quickly run and test your recommender.
+Run from the project root with:
 
-You will implement the functions in recommender.py:
-- load_songs
-- score_song
-- recommend_songs
+    python -m src.main
 """
 
-from recommender import load_songs, recommend_songs
+from .recommender import load_songs, recommend_songs
 
 
 def main() -> None:
-    songs = load_songs("data/songs.csv") 
+    """Load songs, build a sample user profile, and print recommendations."""
 
-    # Starter example profile
-    user_prefs = {"genre": "pop", "mood": "happy", "energy": 0.8}
+    songs = load_songs("data/songs.csv")
+    print(f"Loaded songs: {len(songs)}")
 
-    recommendations = recommend_songs(user_prefs, songs, k=5)
+    user_prefs = {
+        "genre": "pop",
+        "mood": "happy",
+        "energy": 0.8,
+        "valence": 0.9,
+        "danceability": 0.8,
+    }
 
-    print("\nTop recommendations:\n")
-    for rec in recommendations:
-        # You decide the structure of each returned item.
-        # A common pattern is: (song, score, explanation)
-        song, score, explanation = rec
-        print(f"{song['title']} - Score: {score:.2f}")
-        print(f"Because: {explanation}")
-        print()
+    recommendations = recommend_songs(
+        user_prefs=user_prefs,
+        songs=songs,
+        k=5,
+    )
+
+    print("\nUser profile:")
+    print(
+        f"Genre: {user_prefs['genre']}, "
+        f"Mood: {user_prefs['mood']}, "
+        f"Energy: {user_prefs['energy']}"
+    )
+
+    print("\nTop recommendations:")
+
+    for position, (song, score, explanation) in enumerate(
+        recommendations,
+        start=1,
+    ):
+        print(
+            f"\n{position}. {song['title']} by {song['artist']}"
+        )
+        print(
+            f"   Genre: {song['genre']} | "
+            f"Mood: {song['mood']} | "
+            f"Energy: {song['energy']:.2f}"
+        )
+        print(f"   Score: {score:.2f}")
+        print(f"   Because: {explanation}")
 
 
 if __name__ == "__main__":
     main()
+
+
+    
